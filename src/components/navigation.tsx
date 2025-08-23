@@ -1,61 +1,176 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-import { RxHamburgerMenu, RxCross1 } from "react-icons/rx";
+import { useState, useEffect } from "react";
+import { RxCross1 } from "react-icons/rx";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeItem, setActiveItem] = useState("/");
+
   const navItems = [
     { name: "Home", href: "/" },
     { name: "Projects", href: "/projects" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close menu when clicking outside or on link
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
   return (
-    <div className="w-full h-fit bg-white shadow-md">
-      <div className="container mx-auto flex items-center justify-center p-4 relative text-black">
-        {/* Mobile Toggle Button at end */}
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden w-fit ml-auto">
-          {!isMenuOpen && <RxHamburgerMenu />}
-        </button>
-        {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center space-x-6">
-          {navItems.map((item) => (
-            <li key={item.name}>
-              <Link href={item.href} className=" hover:text-blue-600 font-medium px-4 py-2">
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <div
-          className={`fixed inset-0 bg-black transition-opacity duration-300 z-10 xl:hidden ${isMenuOpen ? 'opacity-30 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-          onClick={closeMenu}
-        />
-        <div
-          className={`fixed top-0 left-0 h-full bg-white z-50 transform transition-transform duration-300 ease-in-out p-6
-            w-full sm:w-2/5 md:shadow-2xl xl:hidden
-            ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        >
-          <div className="flex justify-end items-center">
-            <button onClick={() => setIsMenuOpen(false)} className=" hover:text-blue-600">
-              <RxCross1 />
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out ${scrolled
+      ? "bg-white/90 backdrop-blur-md shadow-lg border-b border-gray-100"
+      : "bg-white shadow-md"
+      }`}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-end md:justify-center h-16 lg:h-20">
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:block">
+            <div className="flex items-center space-x-1">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setActiveItem(item.href)}
+                  className={`relative px-6 py-3 rounded-full font-medium transition-all duration-300 group ${activeItem === item.href
+                    ? "text-blue-600"
+                    : "text-gray-700 hover:text-blue-600"
+                    }`}
+                >
+                  {item.name}
+                  <span className={`absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-300 ${activeItem === item.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`} />
+                  <span className="absolute inset-0 rounded-full bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="relative p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 h-6 relative">
+                <span className={`absolute top-1.5 left-0 w-full h-0.5 bg-gray-700 transition-all duration-300 ease-in-out ${isMenuOpen ? "rotate-45 translate-y-1.5" : ""
+                  }`} />
+                <span className={`absolute top-3 left-0 w-full h-0.5 bg-gray-700 transition-all duration-300 ease-in-out ${isMenuOpen ? "opacity-0" : ""
+                  }`} />
+                <span className={`absolute top-4.5 left-0 w-full h-0.5 bg-gray-700 transition-all duration-300 ease-in-out ${isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
+                  }`} />
+              </div>
             </button>
           </div>
-          <ul className="flex flex-col items-center sm:items-start flex-1 space-y-4">
-            {navItems.map((item) => (
-              <li key={item.name}>
-                <Link href={item.href} className="hover:text-blue-600 font-medium text-lg px-4 py-2" onClick={() => setIsMenuOpen(false)}>
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
-    </div>
+
+      {/* Mobile menu overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+            onClick={closeMenu}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile menu panel */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed top-0 left-0 h-full w-full max-w-sm bg-white z-50 md:hidden shadow-2xl"
+          >
+            <div className="p-6">
+              {/* Mobile menu header */}
+              <div className="flex items-center justify-end">
+                <button
+                  onClick={closeMenu}
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  aria-label="Close menu"
+                >
+                  <RxCross1 className="w-6 h-6 text-gray-600" />
+                </button>
+              </div>
+
+              {/* Mobile menu items */}
+              <div className="space-y-2">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{
+                      delay: index * 0.1,
+                      duration: 0.3,
+                      ease: "easeOut"
+                    }}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={() => {
+                        setActiveItem(item.href);
+                        closeMenu();
+                      }}
+                      className={`block px-6 py-4 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105 ${activeItem === item.href
+                        ? "bg-gradient-to-r from-blue-50 to-purple-50 text-blue-600 scale-105"
+                        : "text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                        }`}
+                    >
+                      <span className="flex items-center">
+                        <span className={`w-2 h-2 rounded-full mr-4 transition-all duration-300 ${activeItem === item.href ? "bg-blue-600" : "bg-gray-300"
+                          }`} />
+                        {item.name}
+                      </span>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Mobile menu footer */}
+              <div className="mt-12 pt-8 border-t border-gray-100">
+                <div className="text-center text-sm text-gray-500">
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
   );
 }
