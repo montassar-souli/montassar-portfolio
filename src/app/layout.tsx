@@ -47,9 +47,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <div className="min-h-screen flex flex-col bg-white">
+        <div className="flex flex-col bg-white">
           <Navigation />
-          <main className="flex-1">{children}</main>
+          <main className="mt-20">{children}</main>
           <Footer />
         </div>
       </body>

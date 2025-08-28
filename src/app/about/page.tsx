@@ -1,9 +1,10 @@
 import React from 'react'
+import About from './about'
 
 const AboutPage = () => {
     return (
-        <div className="w-full h-screen bg-green-500">
-            AboutPage
+        <div className="">
+            <About />
         </div>
     )
 }

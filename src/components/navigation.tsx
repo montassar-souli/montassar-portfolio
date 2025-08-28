@@ -48,8 +48,12 @@ export default function Navigation() {
       : "bg-white shadow-md"
       }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-end md:justify-center h-16 lg:h-20">
-
+        <div className="flex items-center justify-end md:justify-between h-16 lg:h-20">
+          <div className="flex-shrink-0 hidden md:block">
+            <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
+              Montassar.dev
+            </Link>
+          </div>
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="flex items-center space-x-1">
@@ -76,7 +80,7 @@ export default function Navigation() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="relative p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
               aria-label="Toggle menu"
             >
               <div className="w-6 h-6 relative">
@@ -121,7 +125,7 @@ export default function Navigation() {
               <div className="flex items-center justify-end">
                 <button
                   onClick={closeMenu}
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
                   aria-label="Close menu"
                 >
                   <RxCross1 className="w-6 h-6 text-gray-600" />
