@@ -1,9 +1,10 @@
 import React from 'react'
+import Contact from './contact'
 
 const ContactPage = () => {
     return (
-        <div className="w-full h-screen bg-blue-500">
-            ContactPage
+        <div className="">
+            <Contact />
         </div>
     )
 }

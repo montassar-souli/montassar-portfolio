@@ -86,7 +86,7 @@ const Hero = () => {
                             transition={{ duration: 0.8, delay: 0.8 }}
                             className='text-xl text-gray-600 leading-relaxed mb-8 max-w-lg mx-auto lg:mx-0'
                         >
-                            I am a passionate developer with experience in building 
+                            I am a passionate developer with experience in building
                             <span className='text-blue-600 font-medium'> modern web applications </span>
                             that deliver exceptional user experiences.
                         </motion.p>
@@ -101,6 +101,14 @@ const Hero = () => {
                             <motion.button
                                 whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.95 }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const button = e.currentTarget;
+                                    button.style.transform = 'scale(0.95)';
+                                    setTimeout(() => {
+                                        window.location.href = '/projects';
+                                    }, 300); // Delay to allow animation to complete
+                                }}
                                 className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
                             >
                                 View My Work
@@ -108,6 +116,14 @@ const Hero = () => {
                             <motion.button
                                 whileHover={{ scale: 1.05, y: -2 }}
                                 whileTap={{ scale: 0.95 }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const button = e.currentTarget;
+                                    button.style.transform = 'scale(0.95)';
+                                    setTimeout(() => {
+                                        window.location.href = '/contact';
+                                    }, 300); // Delay to allow animation to complete
+                                }}
                                 className='border-2 border-gray-900 text-gray-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300'
                             >
                                 Get In Touch
@@ -134,7 +150,7 @@ const Hero = () => {
                                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                                 className="absolute -bottom-4 -right-4 w-32 h-32 border-4 border-purple-300 rounded-full opacity-30"
                             />
-                            
+
                             {/* Main image container */}
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
