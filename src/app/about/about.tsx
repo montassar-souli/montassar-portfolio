@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 
 const About = () => {
     const skills = [
@@ -117,14 +116,14 @@ const About = () => {
                         <div className='bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20'>
                             <h3 className='text-2xl font-bold text-gray-900 mb-4'>Full Stack Developer</h3>
                             <p className='text-gray-600 leading-relaxed mb-6'>
-                                Hi! I'm <span className='text-blue-600 font-semibold'>Montassar Souli</span>, a passionate Full Stack Developer with 1 year of professional experience. 
+                                Hi! I&apos;m <span className='text-blue-600 font-semibold'>Montassar Souli</span>, a passionate Full Stack Developer with 1 year of professional experience.
                                 I specialize in building modern, scalable web applications using cutting-edge technologies like Next.js, React, and NestJS.
                             </p>
                             <p className='text-gray-600 leading-relaxed mb-6'>
-                                My journey in tech has been driven by curiosity and a love for problem-solving. From frontend magic with React and TailwindCSS 
+                                My journey in tech has been driven by curiosity and a love for problem-solving. From frontend magic with React and TailwindCSS
                                 to robust backend solutions with Node.js and databases, I enjoy the full spectrum of web development.
                             </p>
-                            
+
                             {/* Current Project Highlight */}
                             <motion.div
                                 whileHover={{ scale: 1.02 }}
@@ -225,11 +224,10 @@ const About = () => {
                                         <div className='flex-1'>
                                             <h4 className='font-semibold text-gray-900'>{edu.degree}</h4>
                                             <p className='text-blue-600 text-sm'>{edu.school}</p>
-                                            <span className={`text-xs px-2 py-1 rounded-full ${
-                                                edu.status === 'Current Studies' 
-                                                    ? 'bg-green-100 text-green-800' 
+                                            <span className={`text-xs px-2 py-1 rounded-full ${edu.status === 'Current Studies'
+                                                    ? 'bg-green-100 text-green-800'
                                                     : 'bg-blue-100 text-blue-800'
-                                            }`}>
+                                                }`}>
                                                 {edu.status}
                                             </span>
                                         </div>
@@ -242,7 +240,7 @@ const About = () => {
                         <div className='bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20'>
                             <h3 className='text-2xl font-bold text-gray-900 mb-6'>Beyond Code</h3>
                             <p className='text-gray-600 mb-6 leading-relaxed'>
-                                My hobbies aren't just pastimes—they're integral to my development philosophy. Each one contributes 
+                                My hobbies aren&apos;t just pastimes—they&apos;re integral to my development philosophy. Each one contributes
                                 to my growth as a developer and problem-solver.
                             </p>
                             <div className='grid grid-cols-2 gap-4'>
@@ -269,8 +267,8 @@ const About = () => {
                                 viewport={{ once: true }}
                                 className='text-gray-600 text-sm mt-6 text-center italic'
                             >
-                                "The discipline from martial arts, creativity from reading, and strategic thinking from gaming 
-                                all converge in my approach to coding and problem-solving."
+                                &ldquo;The discipline from martial arts, creativity from reading, and strategic thinking from gaming
+                                all converge in my approach to coding and problem-solving.&rdquo;
                             </motion.p>
                         </div>
                     </motion.div>
@@ -285,9 +283,9 @@ const About = () => {
                     className='text-center mt-16'
                 >
                     <div className='bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 max-w-2xl mx-auto'>
-                        <h3 className='text-2xl font-bold text-gray-900 mb-4'>Let's Build Something Amazing Together</h3>
+                        <h3 className='text-2xl font-bold text-gray-900 mb-4'>Let&apos;s Build Something Amazing Together</h3>
                         <p className='text-gray-600 mb-6'>
-                            Ready to bring your ideas to life? I'm always excited to work on new projects and challenges.
+                            Ready to bring your ideas to life? I&apos;m always excited to work on new projects and challenges.
                         </p>
                         <motion.button
                             whileHover={{ scale: 1.05, y: -2 }}

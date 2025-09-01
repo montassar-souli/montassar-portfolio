@@ -154,13 +154,13 @@ const Contact = () => {
                         Get In Touch
                     </span>
                     <h1 className='text-4xl md:text-5xl font-bold text-gray-900 mb-6'>
-                        Let's Build Something{' '}
+                        Let&apos;s Build Something{' '}
                         <span className='bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
                             Amazing
                         </span>
                     </h1>
                     <p className='text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed'>
-                        Have a project in mind? I'm always excited to discuss new opportunities and collaborate on innovative solutions.
+                        Have a project in mind? I&apos;m always excited to discuss new opportunities and collaborate on innovative solutions.
                     </p>
                 </motion.div>
 
@@ -174,7 +174,7 @@ const Contact = () => {
                         className='bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20'
                     >
                         <h2 className='text-2xl font-bold text-gray-900 mb-6'>Send me a message</h2>
-                        
+
                         {/* Success/Error Messages */}
                         {submitStatus === 'success' && (
                             <motion.div
@@ -184,7 +184,7 @@ const Contact = () => {
                             >
                                 <div className='flex items-center'>
                                     <span className='text-xl mr-2'>✅</span>
-                                    <span className='font-medium'>Message sent successfully! I'll get back to you soon.</span>
+                                    <span className='font-medium'>Message sent successfully! I&apos;ll get back to you soon.</span>
                                 </div>
                             </motion.div>
                         )}
@@ -301,11 +301,10 @@ const Contact = () => {
                                 disabled={isSubmitting}
                                 whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
                                 whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                                className={`w-full py-4 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 ${
-                                    isSubmitting
+                                className={`w-full py-4 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 ${isSubmitting
                                         ? 'bg-gray-400 cursor-not-allowed'
                                         : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-xl'
-                                }`}
+                                    }`}
                             >
                                 {isSubmitting ? (
                                     <div className='flex items-center justify-center'>
@@ -386,7 +385,7 @@ const Contact = () => {
                                 <span className='font-semibold'>Currently Available</span>
                             </div>
                             <p className='text-green-100 text-sm'>
-                                Open for new projects and collaborations. 
+                                Open for new projects and collaborations.
                                 Average response time: 24 hours
                             </p>
                         </motion.div>

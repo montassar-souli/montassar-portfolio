@@ -106,9 +106,9 @@ export function Footer() {
                     <p className="text-blue-400 text-sm">Full Stack Developer</p>
                   </div>
                 </motion.div>
-                
+
                 <p className="text-gray-300 leading-relaxed mb-6 max-w-md">
-                  Passionate about creating exceptional digital experiences with modern technologies. 
+                  Passionate about creating exceptional digital experiences with modern technologies.
                   I help businesses build scalable web applications that drive real results.
                 </p>
 
@@ -234,7 +234,7 @@ export function Footer() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
             <div>
-              <h4 className="text-lg font-semibold mb-4">Let's Connect</h4>
+              <h4 className="text-lg font-semibold mb-4">Let&apos;s Connect</h4>
               <div className="flex space-x-4">
                 {socialLinks.map((social, index) => (
                   <motion.div
@@ -309,7 +309,7 @@ export function Footer() {
               </motion.div>
               <span>and lots of coffee ☕</span>
             </div>
-            
+
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>

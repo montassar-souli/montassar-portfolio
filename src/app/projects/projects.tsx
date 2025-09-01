@@ -123,7 +123,7 @@ const Projects = () => {
                         </span>
                     </h1>
                     <p className='text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed'>
-                        A showcase of solutions I've built for clients and personal projects, focusing on real business impact and user experience.
+                        A showcase of solutions I&apos;ve built for clients and personal projects, focusing on real business impact and user experience.
                     </p>
                 </motion.div>
 
@@ -142,8 +142,8 @@ const Projects = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${activeCategory === category
-                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                                    : 'bg-white/70 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200'
+                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                                : 'bg-white/70 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200'
                                 }`}
                         >
                             {category}
@@ -169,8 +169,8 @@ const Projects = () => {
                                     <div className='flex items-center gap-3 mb-2'>
                                         <h3 className='text-2xl font-bold text-gray-900'>{project.title}</h3>
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${project.status === 'Live'
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-blue-100 text-blue-800'
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-blue-100 text-blue-800'
                                             }`}>
                                             {project.status}
                                         </span>
@@ -286,14 +286,14 @@ const Projects = () => {
                     <div className='bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 max-w-2xl mx-auto'>
                         <h3 className='text-2xl font-bold text-gray-900 mb-4'>Have a Project in Mind?</h3>
                         <p className='text-gray-600 mb-6'>
-                            I'm always excited to work on new challenges and help bring innovative ideas to life.
+                            I&apos;m always excited to work on new challenges and help bring innovative ideas to life.
                         </p>
                         <motion.button
                             whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
                             className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
                         >
-                            Let's Discuss Your Project
+                            Let&apos;s Discuss Your Project
                         </motion.button>
                     </div>
                 </motion.div>
