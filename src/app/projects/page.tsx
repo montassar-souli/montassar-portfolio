@@ -1,9 +1,10 @@
 import React from 'react'
+import Projects from './projects'
 
 const ProjectsPage = () => {
     return (
-        <div className="w-full h-screen bg-red-500">
-            ProjectsPage
+        <div>
+            <Projects />
         </div>
     )
 }
