@@ -2,9 +2,10 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 
 const Hero = () => {
-    
+    const [isFlipped, setIsFlipped] = useState(false)
     return (
         <div className='relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden'>
             <div className="absolute inset-0">
@@ -140,20 +141,90 @@ const Hero = () => {
                             />
 
                             <motion.div
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 0.3 }}
                                 className="relative w-80 h-96 lg:w-96 lg:h-[500px]"
+                                style={{ perspective: '1000px' }}
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl rotate-6 opacity-20"></div>
-                                <div className="relative w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-white">
-                                    <Image
-                                        className="object-cover hover:scale-110 transition-transform duration-700"
-                                        src="/images/profile-image.jpeg"
-                                        alt="Hero Image"
-                                        fill
-                                        priority
-                                    />
-                                </div>
+
+                                <motion.div
+                                    className="relative w-full h-full cursor-pointer"
+                                    style={{ transformStyle: 'preserve-3d' }}
+                                    animate={{ rotateY: isFlipped ? 180 : 0 }}
+                                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                                    onClick={() => setIsFlipped(!isFlipped)}
+                                >
+                                    {/* Front side - Profile Image */}
+                                    <div
+                                        className="group absolute inset-0 w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-white"
+                                        style={{
+                                            backfaceVisibility: 'hidden',
+                                            transform: 'rotateY(0deg)'
+                                        }}
+                                    >
+                                        <div className="relative w-full h-full group">
+                                            <Image
+                                                className="object-cover"
+                                                src="/images/profile-image.jpeg"
+                                                alt="Hero Image"
+                                                fill
+                                                priority
+                                                sizes="(max-width: 768px) 320px, 384px"
+                                            />
+                                            {/* Hover indicator - only shows when hovering over image */}
+                                            <div className="absolute inset-0 bg-transparent group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                                <div className="text-white text-sm font-medium bg-black/70 px-4 py-2 rounded-full backdrop-blur-sm">
+                                                    Click to flip
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Back side - AI Assistant */}
+                                    <div
+                                        className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-600 rounded-3xl shadow-2xl overflow-hidden border-8 border-white flex flex-col items-center justify-center p-8 text-center"
+                                        style={{
+                                            backfaceVisibility: 'hidden',
+                                            transform: 'rotateY(180deg)'
+                                        }}
+                                    >
+                                        <div className="mb-6">
+                                            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+
+                                        <h3 className="text-2xl font-bold text-white mb-3">
+                                            Want to talk with my AI Assistant?
+                                        </h3>
+
+                                        <p className="text-blue-100 mb-6 text-sm leading-relaxed">
+                                            Get instant answers about my experience, skills, and projects through an interactive conversation.
+                                        </p>
+
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                // Add your AI assistant navigation here
+                                                console.log('Navigate to AI Assistant');
+                                            }}
+                                            className="bg-white text-blue-600 px-6 py-3 cursor-pointer rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                        >
+                                            Chat with AI
+                                        </button>
+
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setIsFlipped(false);
+                                            }}
+                                            className="mt-4 cursor-pointer text-blue-100 hover:text-white text-sm underline transition-colors duration-300"
+                                        >
+                                            Back to profile
+                                        </button>
+                                    </div>
+                                </motion.div>
                             </motion.div>
                         </div>
                     </motion.div>
