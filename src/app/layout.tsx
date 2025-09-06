@@ -49,7 +49,7 @@ export default function RootLayout({
       >
         <div className="flex flex-col bg-white">
           <Navigation />
-          <main className="mt-20">{children}</main>
+          <main className="mt-16 lg:mt-20">{children}</main>
           <Footer />
         </div>
       </body>

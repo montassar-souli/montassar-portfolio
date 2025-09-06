@@ -9,7 +9,7 @@ const Hero = () => {
         <div className='relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden'>
             <div className="absolute inset-0">
                 <motion.div
-                    className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+                    className="absolute top-16 lg:top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70"
                     animate={{
                         x: [0, 100, 0],
                         y: [0, -100, 0],

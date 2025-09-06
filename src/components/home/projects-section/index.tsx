@@ -28,7 +28,7 @@ const ProjectsRecap = () => {
             title: 'Ad Eyes',
             description: 'Corporate website for Korean seafood company with premium branding',
             category: 'Corporate',
-            technologies: ['Next.js', 'TypeScript', 'Tailwind CSS','MongoDB','NestJS'],
+            technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'MongoDB', 'NestJS'],
             type: 'private',
             impact: '40% lead increase',
             icon: <FaFish className="text-blue-600" />,
@@ -118,10 +118,9 @@ const ProjectsRecap = () => {
                             key={project.title}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            whileHover={{ y: -5 }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                             viewport={{ once: true }}
-                            className='bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300'
+                            className='bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300'
                         >
                             {/* Project Header */}
                             <div className='flex items-center justify-between mb-4'>
@@ -145,8 +144,8 @@ const ProjectsRecap = () => {
                                         <FaLock className='text-purple-600 text-xs' />
                                     )}
                                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${project.type === 'public'
-                                            ? 'bg-green-100 text-green-700'
-                                            : 'bg-purple-100 text-purple-700'
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-purple-100 text-purple-700'
                                         }`}>
                                         {project.type === 'public' ? 'Open Source' : 'Client Work'}
                                     </span>
@@ -193,7 +192,7 @@ const ProjectsRecap = () => {
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className='w-full flex items-center justify-center gap-2 text-blue-600 font-semibold text-sm py-2 px-4 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors'
+                                className='w-full flex items-center justify-center cursor-pointer gap-2 text-blue-600 font-semibold text-sm py-2 px-4 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors'
                             >
                                 {project.type === 'public' ? 'View Project' : 'Learn More'}
                                 <FaExternalLinkAlt className="text-xs" />
@@ -217,19 +216,18 @@ const ProjectsRecap = () => {
                         </p>
                         <div className='flex flex-col sm:flex-row gap-4 justify-center'>
                             <motion.button
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
-                            >
-                                View All Projects
+                                className='group cursor-pointer relative border-2 border-transparent bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden'                            >
+                                <div className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
+                                <span className="relative z-10 group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300 delay-200">View All Projects</span>
                             </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                className='border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-full font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-300'
+                            <motion.a
+                                href="/resume/Montassar-Souli-Resume.pdf"
+                                download="Montassar-Souli-Resume.pdf"
+                                className='group cursor-pointer relative border-2 border-gray-300 text-gray-700 px-6 py-3 rounded-full font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-300 overflow-hidden inline-flex items-center justify-center'
                             >
-                                Download Resume
-                            </motion.button>
+                                <div className="absolute inset-0 bg-gray-400 transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
+                                <span className="relative z-10 group-hover:text-white transition-colors duration-300 delay-200">Download Resume</span>
+                            </motion.a>
                         </div>
                     </div>
                 </motion.div>
