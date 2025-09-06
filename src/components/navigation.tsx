@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,11 +48,17 @@ export default function Navigation() {
       ? "bg-white/90 backdrop-blur-md shadow-lg border-b border-gray-100"
       : "bg-white shadow-md"
       }`}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 bg-white">
         <div className="flex items-center justify-end md:justify-between h-16 lg:h-20">
           <div className="flex-shrink-0 hidden md:block">
-            <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
-              Montassar.dev
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/images/portfolio_logo-2.png"
+                alt="Montassar Portfolio Logo"
+                width={48}
+                height={48}
+                className="rounded-lg"
+              />
             </Link>
           </div>
           {/* Desktop Navigation */}
@@ -95,6 +102,7 @@ export default function Navigation() {
           </div>
         </div>
       </div>
+
 
       {/* Mobile menu overlay */}
       <AnimatePresence>

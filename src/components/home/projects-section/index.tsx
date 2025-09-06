@@ -2,26 +2,37 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
+import {
+    FaGraduationCap,
+    FaFish,
+    FaGem,
+    FaChartLine,
+    FaLock,
+    FaExternalLinkAlt
+} from 'react-icons/fa'
 
 const ProjectsRecap = () => {
     const featuredProjects = [
         {
-            title: 'Bootcamp Formation Center',
+            title: 'Academy Expert',
             description: 'AI-powered SaaS platform with role-based dashboards and payment integration',
             category: 'SaaS Platform',
             technologies: ['Express.js', 'Angular', 'MongoDB', 'AI APIs'],
             type: 'public',
             impact: '80% task automation',
-            icon: '🎓'
+            icon: <FaGraduationCap className="text-blue-600" />,
+            logoSrc: '/images/logo-academy-expert.jpg'
         },
         {
             title: 'Ad Eyes',
             description: 'Corporate website for Korean seafood company with premium branding',
             category: 'Corporate',
-            technologies: ['Next.js', 'TypeScript', 'Tailwind CSS'],
+            technologies: ['Next.js', 'TypeScript', 'Tailwind CSS','MongoDB','NestJS'],
             type: 'private',
             impact: '40% lead increase',
-            icon: '🐟'
+            icon: <FaFish className="text-blue-600" />,
+            logoSrc: '/images/logo-ad.svg'
         },
         {
             title: 'Numenza',
@@ -30,19 +41,20 @@ const ProjectsRecap = () => {
             technologies: ['Next.js', 'TypeScript', 'Tailwind CSS'],
             type: 'private',
             impact: '60% AOV increase',
-            icon: '💎'
+            icon: <FaGem className="text-blue-600" />,
+            logoSrc: '/images/logo-numenza.svg'
         }
     ]
 
     const stats = [
-        { number: '5+', label: 'Projects Delivered', icon: '🚀' },
-        { number: '3', label: 'Private Clients', icon: '🤝' },
-        { number: '2', label: 'SaaS Platforms', icon: '⚡' },
-        { number: '100%', label: 'Client Satisfaction', icon: '⭐' }
+        { number: '5+', label: 'Projects Delivered' },
+        { number: '3', label: 'Private Clients' },
+        { number: '1', label: 'SaaS Platform' },
+        { number: '100%', label: 'Client Satisfaction' }
     ]
 
     return (
-        <section className='py-16 bg-white relative overflow-hidden'>
+        <section className='py-16 bg-white relative overflow-hidden h-full'>
             {/* Subtle background pattern */}
             <div className="absolute inset-0 opacity-5">
                 <div className="absolute inset-0" style={{
@@ -91,7 +103,6 @@ const ProjectsRecap = () => {
                             viewport={{ once: true }}
                             className='bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 text-center border border-blue-100 hover:border-blue-200 transition-all duration-300'
                         >
-                            <div className='text-2xl mb-2'>{stat.icon}</div>
                             <div className='text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-1'>
                                 {stat.number}
                             </div>
@@ -114,16 +125,29 @@ const ProjectsRecap = () => {
                         >
                             {/* Project Header */}
                             <div className='flex items-center justify-between mb-4'>
-                                <div className='text-3xl'>{project.icon}</div>
+                                <div className='flex items-center justify-center w-10 h-10 bg-white rounded-lg border border-gray-200 p-1'>
+                                    {project.logoSrc ? (
+                                        <Image
+                                            src={project.logoSrc}
+                                            alt={`${project.title} logo`}
+                                            width={32}
+                                            height={32}
+                                            className="w-full h-full object-contain"
+                                        />
+                                    ) : (
+                                        <div className='text-2xl text-blue-600'>
+                                            {project.icon}
+                                        </div>
+                                    )}
+                                </div>
                                 <div className='flex items-center space-x-2'>
                                     {project.type === 'private' && (
-                                        <span className='text-purple-600 text-xs'>🔒</span>
+                                        <FaLock className='text-purple-600 text-xs' />
                                     )}
-                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                        project.type === 'public' 
-                                            ? 'bg-green-100 text-green-700' 
+                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${project.type === 'public'
+                                            ? 'bg-green-100 text-green-700'
                                             : 'bg-purple-100 text-purple-700'
-                                    }`}>
+                                        }`}>
                                         {project.type === 'public' ? 'Open Source' : 'Client Work'}
                                     </span>
                                 </div>
@@ -136,7 +160,7 @@ const ProjectsRecap = () => {
                             {/* Impact */}
                             <div className='bg-green-50 border border-green-200 rounded-lg p-3 mb-4'>
                                 <div className='flex items-center space-x-2'>
-                                    <span className='text-green-600 text-sm'>📈</span>
+                                    <FaChartLine className='text-green-600 text-sm' />
                                     <span className='text-green-800 text-sm font-semibold'>{project.impact}</span>
                                 </div>
                             </div>
@@ -169,9 +193,10 @@ const ProjectsRecap = () => {
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                className='w-full text-blue-600 font-semibold text-sm py-2 px-4 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors'
+                                className='w-full flex items-center justify-center gap-2 text-blue-600 font-semibold text-sm py-2 px-4 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors'
                             >
                                 {project.type === 'public' ? 'View Project' : 'Learn More'}
+                                <FaExternalLinkAlt className="text-xs" />
                             </motion.button>
                         </motion.div>
                     ))}

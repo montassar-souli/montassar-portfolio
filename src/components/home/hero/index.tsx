@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 const Hero = () => {
+    
     return (
         <div className='relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden'>
             <div className="absolute inset-0">
@@ -94,34 +95,28 @@ const Hero = () => {
                             className='flex flex-col sm:flex-row gap-4 justify-center lg:justify-start'
                         >
                             <motion.button
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    const button = e.currentTarget;
-                                    button.style.transform = 'scale(0.95)';
                                     setTimeout(() => {
                                         window.location.href = '/projects';
                                     }, 300);
                                 }}
-                                className='cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
+                                className='group cursor-pointer relative border-2 border-transparent bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden'
                             >
-                                View My Work
+                                <div className="absolute inset-0 bg-white transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
+                                <span className="relative z-10 group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300 delay-200">View My Work</span>
                             </motion.button>
                             <motion.button
-                                whileHover={{ scale: 1.05, y: -2 }}
-                                whileTap={{ scale: 0.95 }}
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    const button = e.currentTarget;
-                                    button.style.transform = 'scale(0.95)';
                                     setTimeout(() => {
                                         window.location.href = '/contact';
                                     }, 300);
                                 }}
-                                className='cursor-pointer border-2 border-gray-900 text-gray-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300'
+                                className='group cursor-pointer relative border-2 border-gray-900 text-gray-900 px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden'
                             >
-                                Get In Touch
+                                <div className="absolute inset-0 bg-gray-900 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
+                                <span className="relative z-10 group-hover:text-white transition-colors duration-300 delay-200">Get In Touch</span>
                             </motion.button>
                         </motion.div>
                     </motion.div>
