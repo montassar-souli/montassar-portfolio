@@ -2,6 +2,7 @@
 
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight, FaCode, FaHeart } from "react-icons/fa"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
 
@@ -16,22 +17,22 @@ export function Footer() {
     {
       icon: FaEnvelope,
       label: "Email",
-      value: "montassar.souli@example.com",
-      href: "mailto:montassar.souli@example.com",
+      value: "elsoulimontassar@gmail.com",
+      href: "mailto:elsoulimontassar@gmail.com",
       color: "text-blue-600"
     },
     {
       icon: FaPhone,
       label: "Phone",
-      value: "+216 XX XXX XXX",
-      href: "tel:+216XXXXXXX",
+      value: "+216 94 266 854",
+      href: "tel:+21694266854",
       color: "text-green-600"
     },
     {
       icon: FaMapMarkerAlt,
       label: "Location",
-      value: "Tunisia",
-      href: "#",
+      value: "Tunisia, Ariana, Soukra",
+      href: "https://maps.google.com/maps?q=Soukra,+Ariana,+Tunisia",
       color: "text-purple-600"
     }
   ]
@@ -42,14 +43,14 @@ export function Footer() {
       href: "https://github.com/montassar-souli",
       icon: FaGithub,
       color: "hover:bg-gray-900 hover:text-white",
-      followers: "50+"
+      followers: "30+"
     },
     {
       name: "LinkedIn",
       href: "https://linkedin.com/in/montassar-souli",
       icon: FaLinkedin,
       color: "hover:bg-blue-600 hover:text-white",
-      followers: "500+"
+      followers: "300+"
     }
   ]
 
@@ -95,11 +96,16 @@ export function Footer() {
             >
               <div className="mb-6">
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
                   className="flex items-center space-x-3 mb-4"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                    <FaCode className="text-white text-xl" />
+                  <div className="w-12 h-12 rounded-xl overflow-hidden">
+                    <Image
+                      src="/images/portfolio_logo-2.png"
+                      alt="Portfolio Logo"
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <div>
                     <h3 className="text-2xl font-bold">Montassar Souli</h3>
@@ -114,15 +120,14 @@ export function Footer() {
 
                 {/* CTA Button */}
                 <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   <Link
                     href="/contact"
-                    className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
+                    className='inline-flex items-center space-x-2 group cursor-pointer relative border-2 border-transparent bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden'
                   >
-                    <span>Start a Project</span>
-                    <FaArrowRight className="text-sm" />
+                    <span className="relative z-10 group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300 delay-200">Start a Project</span>
+                    <FaArrowRight className="relative z-10 text-sm transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110 group-hover:text-blue-600 group-hover:animate-pulse" />
+                    <div className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
                   </Link>
                 </motion.div>
               </div>
@@ -139,6 +144,8 @@ export function Footer() {
                   >
                     <Link
                       href={contact.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors group"
                     >
                       <div className={`p-2 rounded-lg bg-gray-800 ${contact.color} group-hover:scale-110 transition-transform`}>
