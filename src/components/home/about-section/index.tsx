@@ -2,29 +2,54 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import Link from 'next/link';
+import Link from 'next/link'
+import {
+    FaRocket,
+    FaGraduationCap,
+    FaLaptopCode,
+    FaReact,
+    FaRobot,
+    FaPuzzlePiece,
+    FaNodeJs
+} from 'react-icons/fa'
+import { MdWork } from 'react-icons/md'
+import { IoFlash } from 'react-icons/io5'
+import {
+    SiNextdotjs,
+    SiNestjs,
+    SiTailwindcss,
+    SiMongodb
+} from 'react-icons/si'
 
 const AboutRecap = () => {
     const stats = [
-        { number: '1+', label: 'Years Experience', icon: '💼' },
-        { number: '10+', label: 'Technologies', icon: '⚡' },
-        { number: '3+', label: 'Major Projects', icon: '🚀' },
-        { number: '3', label: 'Degrees', icon: '🎓' }
+        { number: '1+', label: 'Years Experience', icon: <MdWork /> },
+        { number: '10+', label: 'Technologies', icon: <IoFlash /> },
+        { number: '3+', label: 'Major Projects', icon: <FaRocket /> },
+        { number: '3', label: 'Degrees', icon: <FaGraduationCap /> }
     ]
 
     const highlights = [
-        { text: 'Full Stack Developer', icon: '💻' },
-        { text: 'React & Next.js Expert', icon: '⚛️' },
-        { text: 'AI SaaS Builder', icon: '🤖' },
-        { text: 'Problem Solver', icon: '🧩' }
+        { text: 'Full Stack Developer', icon: <FaLaptopCode /> },
+        { text: 'React & Next.js Expert', icon: <FaReact /> },
+        { text: 'AI SaaS Builder', icon: <FaRobot /> },
+        { text: 'Problem Solver', icon: <FaPuzzlePiece /> }
+    ]
+
+    const technologies = [
+        { name: 'React', icon: <FaReact /> },
+        { name: 'Next.js', icon: <SiNextdotjs /> },
+        { name: 'NestJS', icon: <SiNestjs /> },
+        { name: 'TailwindCSS', icon: <SiTailwindcss /> },
+        { name: 'Node.js', icon: <FaNodeJs /> },
+        { name: 'MongoDB', icon: <SiMongodb /> }
     ]
 
     return (
-        <section className='py-16 bg-white relative overflow-hidden'>
-            {/* Subtle background pattern */}
-            <div className="absolute inset-0 opacity-5">
+        <section className='py-16 bg-white relative overflow-hidden h-full'>
+            <div className="absolute inset-0 opacity-50">
                 <div className="absolute inset-0" style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234F46E5' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234F46E5' fill-opacity='0.3'%3E%3Ccircle cx='20' cy='20' r='1.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                 }} />
             </div>
 
@@ -84,7 +109,12 @@ const AboutRecap = () => {
                                     viewport={{ once: true }}
                                     className='flex items-center space-x-3 bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-blue-200 transition-colors'
                                 >
-                                    <span className='text-xl'>{highlight.icon}</span>
+                                    <span className={`text-xl ${highlight.text === 'Full Stack Developer' ? 'text-blue-600' :
+                                            highlight.text === 'React & Next.js Expert' ? 'text-cyan-400' :
+                                                highlight.text === 'AI SaaS Builder' ? 'text-purple-600' :
+                                                    highlight.text === 'Problem Solver' ? 'text-green-600' :
+                                                        'text-black'
+                                        }`}>{highlight.icon}</span>
                                     <span className='font-medium text-gray-700 text-sm'>{highlight.text}</span>
                                 </motion.div>
                             ))}
@@ -134,7 +164,12 @@ const AboutRecap = () => {
                                 viewport={{ once: true }}
                                 className='bg-white rounded-2xl p-6 shadow-lg border border-gray-100 text-center hover:shadow-xl transition-all duration-300'
                             >
-                                <div className='text-3xl mb-3'>{stat.icon}</div>
+                                <div className={`text-3xl mb-3 ${stat.label === 'Years Experience' ? 'text-blue-600' :
+                                        stat.label === 'Technologies' ? 'text-yellow-500' :
+                                            stat.label === 'Major Projects' ? 'text-red-500' :
+                                                stat.label === 'Degrees' ? 'text-green-600' :
+                                                    'text-black'
+                                    }`}>{stat.icon}</div>
                                 <motion.div
                                     initial={{ scale: 0 }}
                                     whileInView={{ scale: 1 }}
@@ -150,7 +185,7 @@ const AboutRecap = () => {
                     </motion.div>
                 </div>
 
-                {/* Bottom section - Tech stack preview */}
+
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -160,18 +195,26 @@ const AboutRecap = () => {
                 >
                     <p className='text-gray-500 text-sm mb-4'>Specialized in</p>
                     <div className='flex flex-wrap justify-center gap-3'>
-                        {['React', 'Next.js', 'NestJS', 'TailwindCSS', 'Node.js', 'MongoDB'].map((tech, index) => (
-                            <motion.span
-                                key={tech}
+                        {technologies.map((tech, index) => (
+                            <motion.div
+                                key={tech.name}
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 whileHover={{ scale: 1.1 }}
                                 transition={{ duration: 0.3, delay: 0.9 + index * 0.05 }}
                                 viewport={{ once: true }}
-                                className='bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium border border-blue-200 hover:border-blue-300 transition-colors'
+                                className='flex items-center gap-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium border border-blue-200 hover:border-blue-300 transition-colors'
                             >
-                                {tech}
-                            </motion.span>
+                                <span className={`text-lg ${tech.name === 'React' ? 'text-cyan-400' :
+                                    tech.name === 'Next.js' ? 'text-black' :
+                                        tech.name === 'NestJS' ? 'text-red-600' :
+                                            tech.name === 'TailwindCSS' ? 'text-teal-500' :
+                                                tech.name === 'Node.js' ? 'text-green-600' :
+                                                    tech.name === 'MongoDB' ? 'text-green-500' :
+                                                        'text-black'
+                                    }`}>{tech.icon}</span>
+                                <span>{tech.name}</span>
+                            </motion.div>
                         ))}
                     </div>
                 </motion.div>

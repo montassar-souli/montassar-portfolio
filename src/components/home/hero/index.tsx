@@ -1,13 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import React from 'react'
 import { motion } from 'framer-motion'
 
 const Hero = () => {
     return (
         <div className='relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 overflow-hidden'>
-            {/* Animated background elements */}
             <div className="absolute inset-0">
                 <motion.div
                     className="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70"
@@ -47,10 +45,8 @@ const Hero = () => {
                 />
             </div>
 
-            {/* Main content */}
             <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16'>
                 <div className='grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]'>
-                    {/* Text content */}
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -91,7 +87,6 @@ const Hero = () => {
                             that deliver exceptional user experiences.
                         </motion.p>
 
-                        {/* CTA Buttons */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -107,9 +102,9 @@ const Hero = () => {
                                     button.style.transform = 'scale(0.95)';
                                     setTimeout(() => {
                                         window.location.href = '/projects';
-                                    }, 300); // Delay to allow animation to complete
+                                    }, 300);
                                 }}
-                                className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
+                                className='cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
                             >
                                 View My Work
                             </motion.button>
@@ -122,16 +117,15 @@ const Hero = () => {
                                     button.style.transform = 'scale(0.95)';
                                     setTimeout(() => {
                                         window.location.href = '/contact';
-                                    }, 300); // Delay to allow animation to complete
+                                    }, 300);
                                 }}
-                                className='border-2 border-gray-900 text-gray-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300'
+                                className='cursor-pointer border-2 border-gray-900 text-gray-900 px-8 py-4 rounded-full font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300'
                             >
                                 Get In Touch
                             </motion.button>
                         </motion.div>
                     </motion.div>
 
-                    {/* Image section */}
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -139,7 +133,6 @@ const Hero = () => {
                         className='relative flex justify-center lg:justify-end'
                     >
                         <div className="relative">
-                            {/* Decorative elements */}
                             <motion.div
                                 animate={{ rotate: 360 }}
                                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
@@ -151,7 +144,6 @@ const Hero = () => {
                                 className="absolute -bottom-4 -right-4 w-32 h-32 border-4 border-purple-300 rounded-full opacity-30"
                             />
 
-                            {/* Main image container */}
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 transition={{ duration: 0.3 }}
