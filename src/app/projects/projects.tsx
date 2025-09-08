@@ -2,6 +2,16 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import {
+    FaLock,
+    FaBuilding,
+    FaChartLine,
+    FaGithub,
+    FaClipboardList,
+    FaExternalLinkAlt,
+    FaCheckCircle,
+    FaClock
+} from 'react-icons/fa'
 
 const Projects = () => {
     const projects = [
@@ -13,6 +23,7 @@ const Projects = () => {
             technologies: ['Express.js', 'Angular', 'MongoDB', 'Socket.IO', 'Tailwind CSS', 'AI APIs'],
             type: 'public',
             github: 'https://github.com/bootcamp-formation-center',
+            liveDemo: 'https://bootcamp-formation-center.vercel.app',
             category: 'SaaS Platform',
             features: ['Role-based dashboards', 'AI resume/certificate generation', 'Quiz creation system', 'GitHub & LinkedIn APIs', 'Stripe & PayPal integration'],
             status: 'Live'
@@ -25,6 +36,7 @@ const Projects = () => {
             technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Stripe'],
             type: 'public',
             github: 'https://github.com/montassar-souli/nutrition-store-next.js',
+            liveDemo: 'https://nutrition-store-nextjs.vercel.app',
             category: 'E-commerce',
             features: ['Product filtering system', 'Stripe checkout integration', 'Responsive design', 'Performance optimization'],
             status: 'Live'
@@ -37,6 +49,7 @@ const Projects = () => {
             technologies: ['Next.js', 'Tailwind CSS', 'React'],
             type: 'public',
             github: 'https://github.com/montassar-souli/food-store',
+            liveDemo: 'https://food-store-demo.vercel.app',
             category: 'Food Tech',
             features: ['Category filtering', 'Cart management', 'Modern UI/UX', 'Mobile-first design'],
             status: 'Live'
@@ -139,39 +152,56 @@ const Projects = () => {
                         <motion.button
                             key={category}
                             onClick={() => setActiveCategory(category)}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${activeCategory === category
-                                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                            className={`relative overflow-hidden px-6 py-3 cursor-pointer rounded-full font-semibold transition-all duration-300 ${activeCategory === category
+                                ? 'text-white shadow-lg'
                                 : 'bg-white/70 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200'
                                 }`}
                         >
-                            {category}
+                            {/* Filling background effect */}
+                            <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: activeCategory === category ? 1 : 0 }}
+                                transition={{
+                                    duration: 0.5,
+                                    ease: [0.4, 0, 0.2, 1]
+                                }}
+                                style={{
+                                    transformOrigin: 'left center',
+                                    zIndex: -1
+                                }}
+                            />
+                            <span className="relative z-10">{category}</span>
                         </motion.button>
                     ))}
                 </motion.div>
 
                 {/* Projects Grid */}
-                <div className='grid lg:grid-cols-2 gap-8'>
+                <div className='columns-1 lg:columns-2 gap-6 lg:gap-8 space-y-0'>
                     {filteredProjects.map((project, index) => (
                         <motion.div
                             key={project.id}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            whileHover={{ y: -5 }}
+                            whileHover={{ y: -5, scale: 1.02 }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                             viewport={{ once: true }}
-                            className='bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300'
+                            className='bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300 break-inside-avoid mb-6 lg:mb-8 inline-block w-full'
                         >
                             {/* Project Header */}
                             <div className='flex items-start justify-between mb-6'>
                                 <div className='flex-1'>
                                     <div className='flex items-center gap-3 mb-2'>
                                         <h3 className='text-2xl font-bold text-gray-900'>{project.title}</h3>
-                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${project.status === 'Live'
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 ${project.status === 'Live'
                                             ? 'bg-green-100 text-green-800'
                                             : 'bg-blue-100 text-blue-800'
                                             }`}>
+                                            {project.status === 'Live' ? (
+                                                <FaCheckCircle className="text-xs" />
+                                            ) : (
+                                                <FaClock className="text-xs" />
+                                            )}
                                             {project.status}
                                         </span>
                                     </div>
@@ -181,7 +211,7 @@ const Projects = () => {
                                 </div>
                                 {project.type === 'private' && (
                                     <div className='flex items-center space-x-2 text-purple-600'>
-                                        <span className='text-sm'>🔒</span>
+                                        <FaLock className='text-sm' />
                                         <span className='text-xs font-medium'>Private Client</span>
                                     </div>
                                 )}
@@ -195,7 +225,7 @@ const Projects = () => {
                             {/* Impact */}
                             <div className='bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 mb-6'>
                                 <div className='flex items-start space-x-2'>
-                                    <span className='text-green-600 text-sm'>📈</span>
+                                    <FaChartLine className='text-green-600 text-sm mt-0.5' />
                                     <div>
                                         <h4 className='text-sm font-semibold text-green-800 mb-1'>Business Impact</h4>
                                         <p className='text-green-700 text-sm'>{project.impact}</p>
@@ -237,7 +267,7 @@ const Projects = () => {
                             {project.client && (
                                 <div className='mb-6 p-4 bg-purple-50 border border-purple-200 rounded-xl'>
                                     <div className='flex items-center space-x-2'>
-                                        <span className='text-purple-600'>🏢</span>
+                                        <FaBuilding className='text-purple-600' />
                                         <span className='text-sm font-semibold text-purple-800'>Client: {project.client}</span>
                                     </div>
                                 </div>
@@ -246,30 +276,38 @@ const Projects = () => {
                             {/* Action Buttons */}
                             <div className='flex gap-3'>
                                 {project.type === 'public' ? (
-                                    <motion.a
-                                        href={project.github}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className='flex-1 bg-gradient-to-r from-gray-800 to-black text-white px-6 py-3 rounded-xl font-semibold text-center hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2'
-                                    >
-                                        <span>🐙</span>
-                                        <span>View on GitHub</span>
-                                    </motion.a>
+                                    <>
+                                        <motion.a
+                                            href={project.github}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className='flex-1 bg-gradient-to-r from-gray-800 to-black text-white px-6 py-3 rounded-xl font-semibold text-center hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2'
+                                        >
+                                            <FaGithub />
+                                            <span>View Code</span>
+                                        </motion.a>
+                                        {project.liveDemo && (
+                                            <motion.a
+                                                href={project.liveDemo}
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center space-x-2'
+                                            >
+                                                <FaExternalLinkAlt className="text-sm" />
+                                                <span>Live Demo</span>
+                                            </motion.a>
+                                        )}
+                                    </>
                                 ) : (
                                     <div className='flex-1 bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 px-6 py-3 rounded-xl font-semibold text-center border border-purple-300 flex items-center justify-center space-x-2'>
-                                        <span>📋</span>
+                                        <FaClipboardList />
                                         <span>Case study available on request</span>
                                     </div>
                                 )}
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className='bg-blue-50 text-blue-600 px-4 py-3 rounded-xl font-semibold hover:bg-blue-100 transition-colors border border-blue-200'
-                                >
-                                    Learn More
-                                </motion.button>
                             </div>
                         </motion.div>
                     ))}
