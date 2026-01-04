@@ -4,14 +4,8 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { useState, useEffect } from "react"
 
 export function Footer() {
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const contactInfo = [
     {
@@ -59,7 +53,7 @@ export function Footer() {
     { name: "About", href: "/about" },
     { name: "Projects", href: "/projects" },
     { name: "Contact", href: "/contact" },
-    { name: "Resume", href: "/resume.pdf" }
+    { name: "Resume", href: "/resume/Montassar-Souli-Resume.pdf", download: true }
   ]
 
   const services = [
@@ -178,17 +172,26 @@ export function Footer() {
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                     viewport={{ once: true }}
                   >
-                    <Link
-                      href={link.href}
-                      className="block text-gray-300 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform"
-                    >
-                      {link.name}
-                    </Link>
+                    {link.download ? (
+                      <a
+                        href={link.href}
+                        download="Montassar-Souli-Resume.pdf"
+                        className="block text-gray-300 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="block text-gray-300 hover:text-blue-400 transition-colors duration-200 hover:translate-x-1 transform"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
                   </motion.div>
                 ))}
               </nav>
             </motion.div>
-
             {/* Services */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -307,7 +310,7 @@ export function Footer() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="flex items-center space-x-1 text-gray-400 text-sm">
-              <span>© {mounted ? new Date().getFullYear() : '2024'} Montassar Souli. Crafted with</span>
+              <span>© {true ? new Date().getFullYear() : '2026'} Montassar Souli. Crafted with</span>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}

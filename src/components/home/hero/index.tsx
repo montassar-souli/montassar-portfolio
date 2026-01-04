@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
@@ -207,16 +208,13 @@ const Hero = () => {
                                             Get instant answers about my experience, skills, and projects through an interactive conversation.
                                         </p>
 
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                // Add your AI assistant navigation here
-                                                console.log('Navigate to AI Assistant');
-                                            }}
-                                            className="bg-white text-blue-600 px-6 py-3 cursor-pointer rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                                        <Link
+                                            href="/chat"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="bg-white text-blue-600 px-6 py-3 cursor-pointer rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 inline-block"
                                         >
                                             Chat with AI
-                                        </button>
+                                        </Link>
 
                                         <button
                                             onClick={(e) => {

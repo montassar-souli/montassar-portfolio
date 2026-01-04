@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import {
     FaLock,
     FaBuilding,
@@ -12,80 +13,13 @@ import {
     FaCheckCircle,
     FaClock
 } from 'react-icons/fa'
+import { projects as allProjects, getProjectsByCategory } from '@/lib/projectsData'
 
 const Projects = () => {
-    const projects = [
-        {
-            id: 1,
-            title: 'Bootcamp Formation Center',
-            description: 'A comprehensive SaaS platform revolutionizing online education with AI-powered features, role-based dashboards, and integrated payment systems. Streamlines the entire learning journey from enrollment to certification.',
-            impact: 'Automated 80% of administrative tasks and improved student engagement through AI-driven personalization',
-            technologies: ['Express.js', 'Angular', 'MongoDB', 'Socket.IO', 'Tailwind CSS', 'AI APIs'],
-            type: 'public',
-            github: 'https://github.com/bootcamp-formation-center',
-            liveDemo: 'https://bootcamp-formation-center.vercel.app',
-            category: 'SaaS Platform',
-            features: ['Role-based dashboards', 'AI resume/certificate generation', 'Quiz creation system', 'GitHub & LinkedIn APIs', 'Stripe & PayPal integration'],
-            status: 'Live'
-        },
-        {
-            id: 2,
-            title: 'Nutrition Store',
-            description: 'Modern e-commerce platform specialized in protein and nutrition products. Features advanced filtering, seamless checkout experience, and responsive design optimized for health-conscious consumers.',
-            impact: 'Increased conversion rates by 35% through optimized UX and streamlined checkout process',
-            technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Stripe'],
-            type: 'public',
-            github: 'https://github.com/montassar-souli/nutrition-store-next.js',
-            liveDemo: 'https://nutrition-store-nextjs.vercel.app',
-            category: 'E-commerce',
-            features: ['Product filtering system', 'Stripe checkout integration', 'Responsive design', 'Performance optimization'],
-            status: 'Live'
-        },
-        {
-            id: 3,
-            title: 'Food Store',
-            description: 'Intuitive food ordering platform with modern UI design, smart category filtering, and seamless cart functionality. Built to enhance the digital dining experience with fast, responsive interactions.',
-            impact: 'Reduced order processing time by 50% with streamlined UI and optimized performance',
-            technologies: ['Next.js', 'Tailwind CSS', 'React'],
-            type: 'public',
-            github: 'https://github.com/montassar-souli/food-store',
-            liveDemo: 'https://food-store-demo.vercel.app',
-            category: 'Food Tech',
-            features: ['Category filtering', 'Cart management', 'Modern UI/UX', 'Mobile-first design'],
-            status: 'Live'
-        },
-        {
-            id: 4,
-            title: 'Ad Eyes',
-            description: 'Corporate vitrine website for Aqua Development, a leading Korean seafood company. Delivered a sophisticated brand presentation with optimized performance and clean, professional design that reflects industry leadership.',
-            impact: 'Enhanced brand credibility and improved lead generation by 40% through strategic design and SEO optimization',
-            technologies: ['Next.js', 'Tailwind CSS', 'TypeScript'],
-            type: 'private',
-            client: 'Aqua Development (Korean Seafood Company)',
-            category: 'Corporate Website',
-            features: ['Brand-focused design', 'Performance optimization', 'SEO implementation', 'Multilingual support'],
-            status: 'Delivered'
-        },
-        {
-            id: 5,
-            title: 'Numenza',
-            description: 'Luxury jewelry e-commerce platform emphasizing premium branding and sophisticated user experience. Crafted tailored shopping flows and seamless navigation to match the high-end nature of the products.',
-            impact: 'Elevated brand perception and increased average order value by 60% through premium UX design',
-            technologies: ['Next.js', 'Tailwind CSS', 'TypeScript'],
-            type: 'private',
-            client: 'Luxury Jewelry Brand',
-            category: 'Luxury E-commerce',
-            features: ['Premium branding', 'Tailored shopping flows', 'Advanced product showcase', 'Luxury UX patterns'],
-            status: 'Delivered'
-        }
-    ]
-
     const categories = ['All', 'SaaS Platform', 'E-commerce', 'Corporate Website', 'Food Tech', 'Luxury E-commerce']
     const [activeCategory, setActiveCategory] = useState('All')
 
-    const filteredProjects = activeCategory === 'All'
-        ? projects
-        : projects.filter(project => project.category === activeCategory)
+    const filteredProjects = getProjectsByCategory(activeCategory)
 
     return (
         <section className='relative py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 overflow-hidden'>
@@ -274,9 +208,21 @@ const Projects = () => {
                             )}
 
                             {/* Action Buttons */}
-                            <div className='flex gap-3'>
-                                {project.type === 'public' ? (
-                                    <>
+                            <div className='flex flex-col gap-3'>
+                                {/* View Details Link */}
+                                <Link href={`/project/${project.slug}`}>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className='w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2'
+                                    >
+                                        <span>View Details</span>
+                                        <FaExternalLinkAlt className="text-sm" />
+                                    </motion.button>
+                                </Link>
+
+                                {project.type === 'public' && (
+                                    <div className='flex gap-3'>
                                         <motion.a
                                             href={project.github}
                                             target='_blank'
@@ -286,7 +232,7 @@ const Projects = () => {
                                             className='flex-1 bg-gradient-to-r from-gray-800 to-black text-white px-6 py-3 rounded-xl font-semibold text-center hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2'
                                         >
                                             <FaGithub />
-                                            <span>View Code</span>
+                                            <span>Code</span>
                                         </motion.a>
                                         {project.liveDemo && (
                                             <motion.a
@@ -295,17 +241,12 @@ const Projects = () => {
                                                 rel='noopener noreferrer'
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
-                                                className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center space-x-2'
+                                                className='flex-1 bg-white text-blue-600 border-2 border-blue-600 px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2'
                                             >
                                                 <FaExternalLinkAlt className="text-sm" />
-                                                <span>Live Demo</span>
+                                                <span>Demo</span>
                                             </motion.a>
                                         )}
-                                    </>
-                                ) : (
-                                    <div className='flex-1 bg-gradient-to-r from-purple-100 to-purple-200 text-purple-800 px-6 py-3 rounded-xl font-semibold text-center border border-purple-300 flex items-center justify-center space-x-2'>
-                                        <FaClipboardList />
-                                        <span>Case study available on request</span>
                                     </div>
                                 )}
                             </div>
@@ -326,13 +267,15 @@ const Projects = () => {
                         <p className='text-gray-600 mb-6'>
                             I&apos;m always excited to work on new challenges and help bring innovative ideas to life.
                         </p>
-                        <motion.button
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                            className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
-                        >
-                            Let&apos;s Discuss Your Project
-                        </motion.button>
+                        <Link href='/contact'>
+                            <motion.button
+                                whileHover={{ scale: 1.05, y: -2 }}
+                                whileTap={{ scale: 0.95 }}
+                                className='bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300'
+                            >
+                                Let&apos;s Discuss Your Project
+                            </motion.button>
+                        </Link>
                     </div>
                 </motion.div>
             </div>
