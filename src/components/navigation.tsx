@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeItem, setActiveItem] = useState("/");
+  const [clickedItem, setClickedItem] = useState<string | null>(null);
+  const { activeItem, setActiveItem } = useNavigation();
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -17,7 +19,6 @@ export default function Navigation() {
     { name: "Contact", href: "/contact" },
   ];
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -26,12 +27,10 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close menu when clicking outside or on link
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -42,6 +41,16 @@ export default function Navigation() {
       document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
+
+  const handleNavClick = (href: string) => {
+    setClickedItem(href);
+    setActiveItem(href);
+    
+    // Reset clicked animation after delay
+    setTimeout(() => {
+      setClickedItem(null);
+    }, 600);
+  };
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out ${scrolled
@@ -68,15 +77,48 @@ export default function Navigation() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  onClick={() => setActiveItem(item.href)}
+                  onClick={() => handleNavClick(item.href)}
                   className={`relative px-6 py-3 rounded-full font-medium transition-all duration-300 group ${activeItem === item.href
                     ? "text-blue-600"
                     : "text-gray-700 hover:text-blue-600"
                     }`}
                 >
                   {item.name}
-                  <span className={`absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-300 ${activeItem === item.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  
+                  {/* Animated underline */}
+                  <motion.span 
+                    className="absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
+                    initial={{ scaleX: 0 }}
+                    animate={{ 
+                      scaleX: activeItem === item.href || clickedItem === item.href ? 1 : 0 
+                    }}
+                    transition={{ 
+                      duration: 0.4, 
+                      ease: [0.4, 0, 0.2, 1],
+                      delay: clickedItem === item.href ? 0.1 : 0
+                    }}
+                    style={{ transformOrigin: 'left center' }}
+                  />
+                  
+                  {/* Hover underline (fallback for non-clicked hovers) */}
+                  <span className={`absolute inset-x-0 -bottom-1 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-300 ${activeItem !== item.href && clickedItem !== item.href ? "scale-x-0 group-hover:scale-x-100" : "scale-x-0"
                     }`} />
+                  
+                  {/* Animated background */}
+                  <motion.span 
+                    className="absolute inset-0 rounded-full bg-blue-50 -z-10"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ 
+                      opacity: clickedItem === item.href ? 1 : 0,
+                      scale: clickedItem === item.href ? 1 : 0.8
+                    }}
+                    transition={{ 
+                      duration: 0.3,
+                      ease: [0.4, 0, 0.2, 1]
+                    }}
+                  />
+                  
+                  {/* Hover background (fallback) */}
                   <span className="absolute inset-0 rounded-full bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
                 </Link>
               ))}
@@ -102,7 +144,6 @@ export default function Navigation() {
           </div>
         </div>
       </div>
-
 
       {/* Mobile menu overlay */}
       <AnimatePresence>
@@ -156,7 +197,7 @@ export default function Navigation() {
                     <Link
                       href={item.href}
                       onClick={() => {
-                        setActiveItem(item.href);
+                        handleNavClick(item.href);
                         closeMenu();
                       }}
                       className={`block px-6 py-4 rounded-2xl font-medium transition-all duration-300 transform hover:scale-105 ${activeItem === item.href

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { NavigationProvider } from "@/contexts/NavigationContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,12 +48,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <div className="flex flex-col bg-white">
-          <Navigation />
-          <main className="mt-16 lg:mt-20">{children}</main>
-          <Footer />
-        </div>
+        <NavigationProvider>
+          <div className="flex flex-col bg-white">
+            <Navigation />
+            <main className="mt-16 lg:mt-20">{children}</main>
+            <Footer />
+          </div>
+        </NavigationProvider>
       </body>
-    </html>
+    </html >
   );
 }

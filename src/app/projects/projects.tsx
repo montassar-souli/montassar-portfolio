@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
     FaLock,
@@ -81,7 +81,7 @@ const Projects = () => {
     ]
 
     const categories = ['All', 'SaaS Platform', 'E-commerce', 'Corporate Website', 'Food Tech', 'Luxury E-commerce']
-    const [activeCategory, setActiveCategory] = React.useState('All')
+    const [activeCategory, setActiveCategory] = useState('All')
 
     const filteredProjects = activeCategory === 'All'
         ? projects
