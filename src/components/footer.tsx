@@ -64,6 +64,8 @@ export function Footer() {
     "UI/UX Implementation"
   ]
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="relative bg-gray-900 text-white overflow-hidden">
       {/* Background Pattern */}
@@ -291,7 +293,7 @@ export function Footer() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors hover:cursor-pointer"
                 >
                   Subscribe
                 </motion.button>
@@ -310,7 +312,7 @@ export function Footer() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="flex items-center space-x-1 text-gray-400 text-sm">
-              <span>© {true ? new Date().getFullYear() : '2026'} Montassar Souli. Crafted with</span>
+              <span>© {currentYear} Montassar Souli. Crafted with</span>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
@@ -321,8 +323,10 @@ export function Footer() {
             </div>
 
             <div className="flex items-center space-x-6 text-sm text-gray-400">
-              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+              {/* <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link> */}
+              <span>Privacy Policy</span>
+              <span>Terms of Service</span>
               <span>Made in Tunisia 🇹🇳</span>
             </div>
           </div>

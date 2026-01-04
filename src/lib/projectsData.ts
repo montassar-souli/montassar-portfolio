@@ -86,6 +86,7 @@ export const projects: Project[] = [
             'Shopping cart with persistence'
         ],
         status: 'Live',
+        logoSrc: '/images/no-image.jpg',
         challenges: [
             'Optimizing product images for fast loading',
             'Creating intuitive filtering system',
@@ -126,6 +127,7 @@ export const projects: Project[] = [
             'Order history tracking'
         ],
         status: 'Live',
+        logoSrc: '/images/no-image.jpg',
         challenges: [
             'Creating an appetizing visual design',
             'Implementing real-time cart updates',

@@ -83,7 +83,7 @@ const ProjectsRecap = () => {
                 </motion.div>
 
                 {/* Featured Projects */}
-                <div className='grid md:grid-cols-3 gap-8 mb-12'>
+                <div className='grid md:grid-cols-3 gap-8 mb-12 items-stretch'>
                     {featuredProjects.map((project, index) => (
                         <motion.div
                             key={project.title}
@@ -91,7 +91,7 @@ const ProjectsRecap = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                             viewport={{ once: true }}
-                            className='bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300'
+                            className='bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col h-full'
                         >
                             {/* Project Header */}
                             <div className='flex items-center justify-between mb-4'>
@@ -119,9 +119,9 @@ const ProjectsRecap = () => {
                                 </div>
                             </div>
 
-                            {/* Project Info */}
-                            <h3 className='text-lg font-bold text-gray-900 mb-2'>{project.title}</h3>
-                            <p className='text-gray-600 text-sm mb-4 leading-relaxed'>{project.description}</p>
+                            {/* Project Info */}-
+                            <h3 className='text-lg font-bold text-gray-900 mb2'>{project.title}</h3>
+                            <p className='text-gray-600 text-sm mb-4 leading-relaxed min-h-[2.5rem]'>{project.description}</p>
 
                             {/* Impact */}
                             <div className='bg-green-50 border border-green-200 rounded-lg p-3 mb-4'>
@@ -155,17 +155,19 @@ const ProjectsRecap = () => {
                                 )}
                             </div>
 
-                            {/* Action */}
-                            <Link href={`/project/${project.slug}`}>
-                                <motion.button
-                                    whileHover={{ scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className='w-full flex items-center justify-center cursor-pointer gap-2 text-blue-600 font-semibold text-sm py-2 px-4 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors'
-                                >
-                                    {project.type === 'public' ? 'View Project' : 'Learn More'}
-                                    <FaExternalLinkAlt className="text-xs" />
-                                </motion.button>
-                            </Link>
+                            {/* Action - Push to bottom */}
+                            <div className='mt-auto'>
+                                <Link href={`/project/${project.slug}`}>
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className='w-full flex items-center justify-center cursor-pointer gap-2 text-blue-600 font-semibold text-sm py-2 px-4 rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors'
+                                    >
+                                        {project.type === 'public' ? 'View Project' : 'Learn More'}
+                                        <FaExternalLinkAlt className="text-xs" />
+                                    </motion.button>
+                                </Link>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
