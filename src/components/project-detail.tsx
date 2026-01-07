@@ -101,8 +101,8 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                                 <div className='flex flex-col gap-2 w-full'>
                                     <motion.div
                                         className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-semibold shadow-md ${project.type === 'public'
-                                                ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white'
-                                                : 'bg-gradient-to-r from-purple-400 to-pink-500 text-white'
+                                            ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white'
+                                            : 'bg-gradient-to-r from-purple-400 to-pink-500 text-white'
                                             }`}
                                         whileHover={{ scale: 1.05 }}
                                     >
@@ -128,8 +128,8 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                                     </h1>
                                     <div className='flex items-center gap-2 mb-4'>
                                         <span className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold ${project.status === 'Live'
-                                                ? 'bg-green-100 text-green-800 border border-green-300'
-                                                : 'bg-blue-100 text-blue-800 border border-blue-300'
+                                            ? 'bg-green-100 text-green-800 border border-green-300'
+                                            : 'bg-blue-100 text-blue-800 border border-blue-300'
                                             }`}>
                                             <FaCheckCircle className="text-xs" />
                                             {project.status}
@@ -409,7 +409,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                             </motion.div>
                             <h2 className='text-3xl md:text-4xl font-bold mb-4'>Interested in Similar Work?</h2>
                             <p className='text-xl mb-8 opacity-90 max-w-2xl mx-auto'>
-                                Let's discuss how I can help bring your project to life with the same level of quality and attention to detail
+                                Let&apos;s discuss how I can help bring your project to life with the same level of quality and attention to detail
                             </p>
                             <div className='flex flex-col sm:flex-row gap-4 justify-center'>
                                 <Link href='/contact'>

@@ -18,7 +18,85 @@ const ChatBot = () => {
     const messagesEndRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
 
-    // Initialize messages on client side to avoid hydration mismatch
+    const streamBotIdRef = useRef<string | null>(null)
+    const streamTextRef = useRef('')
+    const rafRef = useRef<number | null>(null)
+
+    const scheduleBotTextUpdate = () => {
+        if (!streamBotIdRef.current) return
+        if (rafRef.current != null) return
+
+        rafRef.current = window.requestAnimationFrame(() => {
+            rafRef.current = null
+            const botId = streamBotIdRef.current
+            if (!botId) return
+            const nextText = streamTextRef.current
+
+            setMessages((prev) => {
+                const idx = prev.findIndex((m) => m.id === botId)
+                if (idx === -1) return prev
+                const next = prev.slice()
+                next[idx] = { ...next[idx], text: nextText }
+                return next
+            })
+        })
+    }
+
+    const formatSeconds = (s: number) => {
+        if (!Number.isFinite(s) || s <= 0) return ''
+        if (s < 60) return `${Math.ceil(s)}s`
+        const m = Math.ceil(s / 60)
+        return `${m}m`
+    }
+
+    const getRetryInfoFromHeaders = (res: Response) => {
+        const resetRaw = res.headers.get('x-ratelimit-reset')
+        if (!resetRaw) return null
+        const n = Number(resetRaw)
+        if (!Number.isFinite(n)) return null
+
+        const now = Date.now()
+        const resetMs = n > 1e12 ? n : n * 1000
+        const seconds = Math.max(0, (resetMs - now) / 1000)
+        return { seconds }
+    }
+
+    const MAX_RESPONSE_LENGTH = 10_000
+    const TRUNCATION_NOTICE = '\n\n(Response truncated)'
+
+    const parseErrorMessage = async (res: Response) => {
+        try {
+            const data = await res.clone().json()
+            const err = typeof data?.error === 'string' ? data.error : ''
+            return err
+        } catch {
+            return ''
+        }
+    }
+
+    const fetchWithRetry = async (url: string, init: RequestInit) => {
+        const maxAttempts = 2
+        let lastErr: unknown = null
+        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                const res = await fetch(url, init)
+                // Retry only transient server/network issues.
+                if (res.status >= 500 && res.status < 600 && attempt < maxAttempts) {
+                    await new Promise((r) => setTimeout(r, 400))
+                    continue
+                }
+                return res
+            } catch (e) {
+                lastErr = e
+                if (attempt < maxAttempts) {
+                    await new Promise((r) => setTimeout(r, 400))
+                    continue
+                }
+            }
+        }
+        throw lastErr
+    }
+
     useEffect(() => {
         setMessages([
             {
@@ -30,79 +108,115 @@ const ChatBot = () => {
         ])
     }, [])
 
-    // Auto-scroll to bottom when new messages arrive
-    // const scrollToBottom = () => {
-    //     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    // }
+    const handleSendMessage = async () => {
+        if (!inputValue.trim() || isLoading) return
 
-    // useEffect(() => {
-    //     scrollToBottom()
-    // }, [messages])
+        const text = inputValue
 
-    // API call function - Replace with your actual API endpoint
-    // const sendMessageToAPI = async (message: string): Promise<string> => {
-    //     try {
-    //         // Example API call - Replace with your actual endpoint
-    //         const response = await fetch('/api/chat', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ message }),
-    //         })
+        const userMessage: Message = {
+            id: Date.now().toString(),
+            text,
+            sender: 'user',
+            timestamp: new Date()
+        }
 
-    //         if (!response.ok) {
-    //             throw new Error('API request failed')
-    //         }
+        const botId = (Date.now() + 1).toString()
+        const botMessage: Message = {
+            id: botId,
+            text: '',
+            sender: 'bot',
+            timestamp: new Date()
+        }
 
-    //         const data = await response.json()
-    //         return data.response || 'Sorry, I could not process your request.'
-    //     } catch (error) {
-    //         console.error('API Error:', error)
-    //         return 'Sorry, there was an error processing your request. Please try again.'
-    //     }
-    // }
+        setMessages(prev => [...prev, userMessage, botMessage])
+        setInputValue('')
+        setIsLoading(true)
 
-    // const handleSendMessage = async () => {
-    //     if (!inputValue.trim() || isLoading) return
+        streamBotIdRef.current = botId
+        streamTextRef.current = ''
 
-    //     const userMessage: Message = {
-    //         id: Date.now().toString(),
-    //         text: inputValue,
-    //         sender: 'user',
-    //         timestamp: new Date()
-    //     }
+        try {
+            const res = await fetchWithRetry('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            })
 
-    //     // Add user message
-    //     setMessages(prev => [...prev, userMessage])
-    //     setInputValue('')
-    //     setIsLoading(true)
+            if (!res.ok || !res.body) {
+                const errText = await parseErrorMessage(res)
+                const retryInfo = getRetryInfoFromHeaders(res)
 
-    //     // Get bot response from API
-    //     const botResponse = await sendMessageToAPI(inputValue)
+                let msg = 'Sorry, I could not process your request.'
 
-    //     const botMessage: Message = {
-    //         id: (Date.now() + 1).toString(),
-    //         text: botResponse,
-    //         sender: 'bot',
-    //         timestamp: new Date()
-    //     }
+                if (res.status === 429) {
+                    if (errText.toLowerCase().includes('daily token quota')) {
+                        msg = 'Daily quota exceeded. Please try again tomorrow.'
+                    } else {
+                        msg = 'You are sending messages too fast. Please wait and try again.'
+                    }
 
-    //     // Add bot message
-    //     setMessages(prev => [...prev, botMessage])
-    //     setIsLoading(false)
+                    if (retryInfo?.seconds != null) {
+                        msg += ` (Retry in ~${formatSeconds(retryInfo.seconds)})`
+                    }
+                }
 
-    //     // Focus back on input
-    //     inputRef.current?.focus()
-    // }
+                setMessages(prev =>
+                    prev.map(m => (m.id === botId ? { ...m, text: msg } : m))
+                )
+                return
+            }
+
+            const reader = res.body.getReader()
+            const decoder = new TextDecoder()
+
+            while (true) {
+                const { value, done } = await reader.read()
+                if (done) break
+                const chunk = decoder.decode(value, { stream: true })
+                streamTextRef.current += chunk
+
+                if (streamTextRef.current.length > MAX_RESPONSE_LENGTH) {
+                    streamTextRef.current =
+                        streamTextRef.current.slice(0, MAX_RESPONSE_LENGTH) + TRUNCATION_NOTICE
+                    scheduleBotTextUpdate()
+                    try {
+                        await reader.cancel()
+                    } catch {
+                    }
+                    break
+                }
+
+                scheduleBotTextUpdate()
+            }
+
+            scheduleBotTextUpdate()
+        } catch {
+            setMessages(prev =>
+                prev.map(m =>
+                    m.id === botId
+                        ? { ...m, text: 'Network error. Please try again.' }
+                        : m
+                )
+            )
+        } finally {
+            setIsLoading(false)
+            inputRef.current?.focus()
+
+            if (rafRef.current != null) {
+                window.cancelAnimationFrame(rafRef.current)
+                rafRef.current = null
+            }
+            streamBotIdRef.current = null
+            streamTextRef.current = ''
+        }
+    }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault()
-            //handleSendMessage()
+            handleSendMessage()
         }
     }
-
     return (
         <div className='flex flex-col h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)] bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100'>
             {/* Messages Container */}
@@ -211,7 +325,7 @@ const ChatBot = () => {
                         <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => {/*handleSendMessage()*/ }}
+                            onClick={handleSendMessage}
                             disabled={!inputValue.trim() || isLoading}
                             className='bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-2xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all'
                         >
