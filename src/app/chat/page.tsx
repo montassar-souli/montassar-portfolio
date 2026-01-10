@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaPaperPlane, FaRobot, FaUser, FaSpinner } from 'react-icons/fa'
+import Image from 'next/image'
 
 interface Message {
     id: string
@@ -101,7 +102,7 @@ const ChatBot = () => {
         setMessages([
             {
                 id: '1',
-                text: 'Hello! How can I help you today?',
+                text: 'Hello! What do you want to know about me?',
                 sender: 'bot',
                 timestamp: new Date()
             }
@@ -233,21 +234,28 @@ const ChatBot = () => {
                                 className={`flex gap-3 ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
                             >
                                 {/* Avatar */}
-                                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${message.sender === 'user'
-                                    ? 'bg-gradient-to-r from-blue-600 to-purple-600'
-                                    : 'bg-gradient-to-r from-green-500 to-emerald-600'
-                                    }`}>
+                                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center`}>
                                     {message.sender === 'user' ? (
-                                        <FaUser className='text-white text-sm' />
+                                        <Image
+                                            src='/images/user.png'
+                                            alt='User Avatar'
+                                            width={20}
+                                            height={20}
+                                        />
                                     ) : (
-                                        <FaRobot className='text-white text-sm' />
+                                        <Image
+                                            src='/images/ai_bot.png'
+                                            alt='Bot Avatar'
+                                            width={20}
+                                            height={20}
+                                        />
                                     )}
                                 </div>
 
                                 {/* Message Bubble */}
                                 <div className={`flex flex-col max-w-[70%] ${message.sender === 'user' ? 'items-end' : 'items-start'
                                     }`}>
-                                    <div className={`rounded-2xl px-4 py-3 shadow-md ${message.sender === 'user'
+                                    <div className={`rounded-2xl px-4 py-1 shadow-md ${message.sender === 'user'
                                         ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                                         : 'bg-white text-gray-800'
                                         }`}>
@@ -273,10 +281,7 @@ const ChatBot = () => {
                             animate={{ opacity: 1, y: 0 }}
                             className='flex gap-3'
                         >
-                            <div className='flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center'>
-                                <FaRobot className='text-white text-sm' />
-                            </div>
-                            <div className='bg-white rounded-2xl px-4 py-3 shadow-md'>
+                            <div className='bg-white rounded-2xl px-4 py-2 shadow-md'>
                                 <div className='flex gap-2'>
                                     <motion.div
                                         animate={{ scale: [1, 1.2, 1] }}
@@ -319,7 +324,7 @@ const ChatBot = () => {
                                 onKeyPress={handleKeyPress}
                                 placeholder='Type your message...'
                                 disabled={isLoading}
-                                className='w-full px-4 py-3 pr-12 rounded-2xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none bg-white shadow-sm disabled:bg-gray-100 disabled:cursor-not-allowed transition-all'
+                                className='w-full text-black px-4 py-3 pr-12 rounded-2xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none bg-white shadow-sm disabled:bg-gray-100 disabled:cursor-not-allowed transition-all'
                             />
                         </div>
                         <motion.button

@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import emailjs from '@emailjs/browser'
 
 // Zod validation schema
 const contactSchema = z.object({
@@ -44,33 +43,22 @@ const Contact = () => {
         setSubmitStatus('idle')
 
         try {
-            // EmailJS configuration
-            const templateParams = {
-                from_name: data.name,
-                from_email: data.email,
-                subject: data.subject,
-                message: data.message,
-                company: data.company || 'Not specified',
-                phone: data.phone || 'Not provided',
-                to_name: 'Montassar Souli'
-            }
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
 
-            // Replace these with your actual EmailJS credentials
-            const result = await emailjs.send(
-                'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-                'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-                templateParams,
-                'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
-            )
-
-            if (result.status === 200) {
+            if (res.ok) {
                 setSubmitStatus('success')
                 reset()
             } else {
                 throw new Error('Failed to send message')
             }
         } catch (error) {
-            console.error('EmailJS error:', error)
+            console.error('Contact form error:', error)
             setSubmitStatus('error')
         } finally {
             setIsSubmitting(false)
