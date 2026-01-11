@@ -4,8 +4,13 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowRight
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { useState } from "react"
 
 export function Footer() {
+
+  const [newsletterEmail, setNewsletterEmail] = useState("")
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [newsletterMessage, setNewsletterMessage] = useState("")
 
   const contactInfo = [
     {
@@ -65,6 +70,34 @@ export function Footer() {
   ]
 
   const currentYear = new Date().getFullYear();
+
+  async function handleNewsletterSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setNewsletterStatus("loading")
+    setNewsletterMessage("")
+
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: newsletterEmail }),
+      })
+
+      if (!res.ok) throw new Error("Request failed")
+
+      setNewsletterStatus("success")
+      setNewsletterMessage("Subscribed. Thanks!")
+      setNewsletterEmail("")
+    } catch {
+      setNewsletterStatus("error")
+      setNewsletterMessage("Could not subscribe. Try again.")
+    }
+  }
+
+  function dismissNewsletterMessage() {
+    setNewsletterStatus("idle")
+    setNewsletterMessage("")
+  }
 
   return (
     <footer className="relative bg-gray-900 text-white overflow-hidden">
@@ -284,20 +317,49 @@ export function Footer() {
             >
               <h4 className="text-lg font-semibold mb-2">Stay Updated</h4>
               <p className="text-gray-400 text-sm mb-4">Get notified about new projects and articles</p>
-              <div className="flex space-x-2">
+              <form onSubmit={handleNewsletterSubmit} className="flex space-x-2">
                 <input
                   type="email"
                   placeholder="Enter your email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  required
+                  autoComplete="email"
                   className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
                 />
                 <motion.button
+                  type="submit"
+                  disabled={newsletterStatus === "loading"}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors hover:cursor-pointer"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors hover:cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Subscribe
+                  {newsletterStatus === "loading" ? "Saving..." : "Subscribe"}
                 </motion.button>
-              </div>
+              </form>
+
+              {newsletterStatus !== "idle" && newsletterStatus !== "loading" && newsletterMessage && (
+                <div
+                  className={
+                    "mt-2 flex items-start justify-between gap-3 rounded-lg border px-3 py-2 text-sm " +
+                    (newsletterStatus === "success"
+                      ? "border-green-500/30 bg-green-900/20 text-green-300"
+                      : "border-red-500/30 bg-red-900/20 text-red-300")
+                  }
+                  role="status"
+                  aria-live="polite"
+                >
+                  <p className="leading-snug">{newsletterMessage}</p>
+                  <button
+                    type="button"
+                    onClick={dismissNewsletterMessage}
+                    aria-label="Dismiss message"
+                    className="inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
             </motion.div>
           </div>
         </motion.div>

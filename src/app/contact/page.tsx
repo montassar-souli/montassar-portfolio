@@ -283,7 +283,7 @@ const Contact = () => {
                                 whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                                 className={`relative w-full py-4 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 overflow-hidden ${isSubmitting
                                     ? 'bg-gradient-to-r from-blue-500 to-purple-500 cursor-wait'
-                                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-xl'
+                                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-xl hover:cursor-pointer'
                                     }`}
                             >
                                 {isSubmitting && (
