@@ -1,12 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FaCheckCircle, FaEnvelope, FaFileAlt, FaGithub, FaGlobe, FaLinkedin, FaMapMarkerAlt, FaPhone, FaTimesCircle } from 'react-icons/fa'
 
-// Zod validation schema
 const contactSchema = z.object({
     name: z.string()
         .min(2, 'Name must be at least 2 characters')
@@ -28,7 +28,15 @@ type ContactFormData = z.infer<typeof contactSchema>
 const Contact = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+    const statusRef = useRef<HTMLDivElement | null>(null)
 
+    useEffect(() => {
+        if (submitStatus === 'success' || submitStatus === 'error') {
+            statusRef.current?.focus()
+        }
+    }, [submitStatus])
+
+    const dismissStatus = () => setSubmitStatus('idle')
     const {
         register,
         handleSubmit,
@@ -65,39 +73,50 @@ const Contact = () => {
         }
     }
 
-    const contactInfo = [
-        {
-            icon: '📧',
-            title: 'Email',
-            value: 'montassar.souli@example.com',
-            description: 'Send me an email anytime'
-        },
-        {
-            icon: '📱',
-            title: 'Phone',
-            value: '+216 XX XXX XXX',
-            description: 'Call me for urgent matters'
-        },
-        {
-            icon: '📍',
-            title: 'Location',
-            value: 'Tunisia',
-            description: 'Available for remote work'
-        },
-        {
-            icon: '💼',
-            title: 'LinkedIn',
-            value: 'linkedin.com/in/montassar-souli',
-            description: 'Connect with me professionally'
-        }
-    ]
-
-    const socialLinks = [
-        { name: 'GitHub', icon: '🐙', url: '#', color: 'from-gray-600 to-gray-800' },
-        { name: 'LinkedIn', icon: '💼', url: '#', color: 'from-blue-600 to-blue-800' },
-        { name: 'Twitter', icon: '🐦', url: '#', color: 'from-blue-400 to-blue-600' },
-        { name: 'Portfolio', icon: '🌐', url: '#', color: 'from-purple-600 to-purple-800' }
-    ]
+    const contactInfo: Array<{
+        title: string
+        value: string
+        description: string
+        href: string
+        external?: boolean
+        icon: React.ReactNode
+        iconColor: string
+    }> = [
+            {
+                title: 'Email',
+                value: 'elsoulimontassar@gmail.com',
+                description: 'Send me an email anytime',
+                href: 'mailto:elsoulimontassar@gmail.com',
+                icon: <FaEnvelope />,
+                iconColor: 'text-blue-600'
+            },
+            {
+                title: 'Phone',
+                value: '+216 94 266 854',
+                description: 'Call me for urgent matters',
+                href: 'tel:+21694266854',
+                icon: <FaPhone />,
+                iconColor: 'text-emerald-600'
+            },
+            {
+                title: 'Location',
+                value: 'Tunisia, Ariana, Soukra',
+                description: 'Available for remote work',
+                href: 'https://maps.google.com/maps?q=Soukra,+Ariana,+Tunisia',
+                external: true,
+                icon: <FaMapMarkerAlt />,
+                iconColor: 'text-purple-600'
+            },
+            {
+                title: 'LinkedIn',
+                value: 'linkedin.com/in/montassar-souli',
+                description: 'Connect with me professionally',
+                href: 'https://linkedin.com/in/montassar-souli',
+                external: true,
+                icon: <FaLinkedin />,
+                iconColor: 'text-sky-600'
+            }
+        ]
 
     return (
         <section className='relative py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 overflow-hidden min-h-screen'>
@@ -163,33 +182,6 @@ const Contact = () => {
                     >
                         <h2 className='text-2xl font-bold text-gray-900 mb-6'>Send me a message</h2>
 
-                        {/* Success/Error Messages */}
-                        {submitStatus === 'success' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className='bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl mb-6'
-                            >
-                                <div className='flex items-center'>
-                                    <span className='text-xl mr-2'>✅</span>
-                                    <span className='font-medium'>Message sent successfully! I&apos;ll get back to you soon.</span>
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {submitStatus === 'error' && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className='bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl mb-6'
-                            >
-                                <div className='flex items-center'>
-                                    <span className='text-xl mr-2'>❌</span>
-                                    <span className='font-medium'>Failed to send message. Please try again or contact me directly.</span>
-                                </div>
-                            </motion.div>
-                        )}
-
                         <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
                             {/* Name and Email Row */}
                             <div className='grid md:grid-cols-2 gap-4'>
@@ -200,7 +192,7 @@ const Contact = () => {
                                     <input
                                         {...register('name')}
                                         type='text'
-                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 focus:ring-offset-transparent focus:border-transparent transition-all duration-200'
                                         placeholder='Your full name'
                                     />
                                     {errors.name && (
@@ -215,7 +207,7 @@ const Contact = () => {
                                     <input
                                         {...register('email')}
                                         type='email'
-                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 focus:ring-offset-transparent focus:border-transparent transition-all duration-200'
                                         placeholder='your.email@example.com'
                                     />
                                     {errors.email && (
@@ -233,7 +225,7 @@ const Contact = () => {
                                     <input
                                         {...register('company')}
                                         type='text'
-                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 focus:ring-offset-transparent focus:border-transparent transition-all duration-200'
                                         placeholder='Your company (optional)'
                                     />
                                 </div>
@@ -245,7 +237,7 @@ const Contact = () => {
                                     <input
                                         {...register('phone')}
                                         type='tel'
-                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 focus:ring-offset-transparent focus:border-transparent transition-all duration-200'
                                         placeholder='Your phone (optional)'
                                     />
                                 </div>
@@ -259,7 +251,7 @@ const Contact = () => {
                                 <input
                                     {...register('subject')}
                                     type='text'
-                                    className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200'
+                                    className='w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 focus:ring-offset-transparent focus:border-transparent transition-all duration-200'
                                     placeholder='What is this about?'
                                 />
                                 {errors.subject && (
@@ -275,7 +267,7 @@ const Contact = () => {
                                 <textarea
                                     {...register('message')}
                                     rows={6}
-                                    className='w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none'
+                                    className='w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus-visible:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 focus:ring-offset-transparent focus:border-transparent transition-all duration-200 resize-none'
                                     placeholder='Tell me about your project or inquiry...'
                                 />
                                 {errors.message && (
@@ -289,20 +281,96 @@ const Contact = () => {
                                 disabled={isSubmitting}
                                 whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
                                 whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                                className={`w-full py-4 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 ${isSubmitting
-                                    ? 'bg-gray-400 cursor-not-allowed'
+                                className={`relative w-full py-4 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 overflow-hidden ${isSubmitting
+                                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 cursor-wait'
                                     : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-xl'
                                     }`}
                             >
-                                {isSubmitting ? (
-                                    <div className='flex items-center justify-center'>
-                                        <div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2'></div>
-                                        Sending...
-                                    </div>
-                                ) : (
-                                    'Send Message'
+                                {isSubmitting && (
+                                    <motion.div
+                                        className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400"
+                                        animate={{
+                                            x: ['-100%', '100%']
+                                        }}
+                                        transition={{
+                                            duration: 1.5,
+                                            repeat: Infinity,
+                                            ease: "linear"
+                                        }}
+                                        style={{
+                                            backgroundImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)'
+                                        }}
+                                    />
                                 )}
+                                <span className="relative z-10 flex items-center justify-center">
+                                    {isSubmitting ? (
+                                        <>
+                                            <svg
+                                                className="animate-spin h-5 w-5 mr-2"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <circle
+                                                    className="opacity-25"
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="10"
+                                                    stroke="currentColor"
+                                                    strokeWidth="4"
+                                                />
+                                                <path
+                                                    className="opacity-75"
+                                                    fill="currentColor"
+                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                />
+                                            </svg>
+                                            Sending Message...
+                                        </>
+                                    ) : (
+                                        'Send Message'
+                                    )}
+                                </span>
                             </motion.button>
+
+                            {/* Success/Error Messages (below button) */}
+                            {(submitStatus === 'success' || submitStatus === 'error') && (
+                                <motion.div
+                                    ref={statusRef}
+                                    tabIndex={-1}
+                                    role={submitStatus === 'error' ? 'alert' : 'status'}
+                                    aria-live={submitStatus === 'error' ? 'assertive' : 'polite'}
+                                    aria-atomic="true"
+                                    initial={{ opacity: 0, y: -8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className={`relative px-4 py-3 rounded-xl border focus:outline-none ${submitStatus === 'success'
+                                        ? 'bg-green-50 border-green-200 text-green-800 focus:ring-2 focus:ring-green-400'
+                                        : 'bg-red-50 border-red-200 text-red-800 focus:ring-2 focus:ring-red-400'
+                                        }`}
+                                >
+                                    <button
+                                        type='button'
+                                        onClick={dismissStatus}
+                                        className='absolute right-3 top-3 text-gray-500 hover:text-gray-900 transition-colors'
+                                        aria-label='Dismiss message'
+                                    >
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+
+                                    <div className='flex items-start pr-8'>
+                                        {submitStatus === 'success' ? (
+                                            <FaCheckCircle className='text-xl mr-2 mt-0.5' aria-hidden="true" />
+                                        ) : (
+                                            <FaTimesCircle className='text-xl mr-2 mt-0.5' aria-hidden="true" />
+                                        )}
+                                        <div className='text-sm font-medium leading-relaxed'>
+                                            {submitStatus === 'success'
+                                                ? "Message sent successfully! I'll get back to you soon."
+                                                : "Failed to send message. Please try again or contact me directly."}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
                         </form>
                     </motion.div>
 
@@ -327,37 +395,27 @@ const Contact = () => {
                                     className='bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300'
                                 >
                                     <div className='flex items-start space-x-4'>
-                                        <div className='text-3xl'>{info.icon}</div>
+                                        <span
+                                            className={`text-2xl ${info.iconColor} w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center`}
+                                            aria-hidden="true"
+                                        >
+                                            {info.icon}
+                                        </span>
                                         <div className='flex-1'>
                                             <h3 className='font-bold text-gray-900 mb-1'>{info.title}</h3>
-                                            <p className='text-blue-600 font-semibold mb-1'>{info.value}</p>
+                                            <a
+                                                href={info.href}
+                                                target={info.external ? '_blank' : undefined}
+                                                rel={info.external ? 'noreferrer noopener' : undefined}
+                                                className='text-blue-700 font-semibold mb-1 inline-block hover:underline underline-offset-4'
+                                            >
+                                                {info.value}
+                                            </a>
                                             <p className='text-gray-600 text-sm'>{info.description}</p>
                                         </div>
                                     </div>
                                 </motion.div>
                             ))}
-                        </div>
-
-                        {/* Social Links */}
-                        <div className='bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20'>
-                            <h3 className='text-xl font-bold text-gray-900 mb-4'>Connect with me</h3>
-                            <div className='grid grid-cols-2 gap-3'>
-                                {socialLinks.map((social, index) => (
-                                    <motion.a
-                                        key={social.name}
-                                        href={social.url}
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        whileHover={{ scale: 1.05, y: -2 }}
-                                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                                        viewport={{ once: true }}
-                                        className={`bg-gradient-to-r ${social.color} text-white rounded-xl p-4 text-center font-semibold shadow-lg hover:shadow-xl transition-all duration-300 block`}
-                                    >
-                                        <div className='text-2xl mb-1'>{social.icon}</div>
-                                        <div className='text-sm'>{social.name}</div>
-                                    </motion.a>
-                                ))}
-                            </div>
                         </div>
 
                         {/* Availability Status */}

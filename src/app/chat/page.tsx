@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaPaperPlane, FaRobot, FaUser, FaSpinner } from 'react-icons/fa'
+import { FaPaperPlane, FaSpinner } from 'react-icons/fa'
 import Image from 'next/image'
 
 interface Message {
@@ -81,7 +81,6 @@ const ChatBot = () => {
         for (let attempt = 1; attempt <= maxAttempts; attempt++) {
             try {
                 const res = await fetch(url, init)
-                // Retry only transient server/network issues.
                 if (res.status >= 500 && res.status < 600 && attempt < maxAttempts) {
                     await new Promise((r) => setTimeout(r, 400))
                     continue

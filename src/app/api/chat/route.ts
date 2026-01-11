@@ -30,11 +30,9 @@ function corsHeaders(req: NextRequest) {
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
     };
-    // If we're not using wildcard, vary by Origin to keep caches safe.
     if (allowed !== "*") {
         headers["Vary"] = "Origin";
     }
-    // If a request has an Origin header and we're allowing all, also vary.
     if (allowed === "*" && req.headers.get("origin")) {
         headers["Vary"] = "Origin";
     }
@@ -74,7 +72,6 @@ function getHttpStatus(e: unknown, fallback: number) {
 }
 
 export async function OPTIONS(req: NextRequest) {
-    // Preflight
     try {
         assertAllowedOrigin(req);
     } catch (err: unknown) {
@@ -293,7 +290,6 @@ export async function POST(req: NextRequest) {
                     if (isAbortError(e)) {
                         aborted = true;
                     } else if (timedOut) {
-                        // Timeout is a server-side failure; do not treat as client abort.
                     } else {
                         logStreamError(e);
                     }

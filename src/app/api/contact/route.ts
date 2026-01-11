@@ -120,7 +120,19 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        if (!emailjsCfg.privateKey) {
+            return NextResponse.json(
+                {
+                    error:
+                        "Server misconfigured: missing EMAILJS_PRIVATE_KEY (required for server-side EmailJS calls)",
+                },
+                { status: 500, headers: baseCors }
+            );
+        }
+
         const { name, email, subject, message, company, phone } = parsed.data;
+        const submittedAt = new Date();
+        const sourceUrl = req.headers.get("referer") || req.headers.get("origin") || "";
 
         const payload: Record<string, unknown> = {
             service_id: emailjsCfg.serviceId,
@@ -134,18 +146,27 @@ export async function POST(req: NextRequest) {
                 company: (company || "").trim() || "Not specified",
                 phone: (phone || "").trim() || "Not provided",
                 to_name: "Montassar Souli",
+                submitted_at: submittedAt.toISOString(),
+                source: sourceUrl,
+                ip,
             },
         };
 
-        // Using the REST API from the server allows you to keep the Private Key out of the browser.
-        if (emailjsCfg.privateKey) {
-            payload.accessToken = emailjsCfg.privateKey;
-        }
+        payload.accessToken = emailjsCfg.privateKey;
+
+        const origin = req.headers.get("origin") || config.security.allowedOrigin || "";
+        const referer = req.headers.get("referer") || (origin ? `${origin}/contact` : "");
+        const userAgent =
+            req.headers.get("user-agent") ||
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
         const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                ...(origin ? { Origin: origin } : {}),
+                ...(referer ? { Referer: referer } : {}),
+                "User-Agent": userAgent,
             },
             body: JSON.stringify(payload),
         });
@@ -155,6 +176,7 @@ export async function POST(req: NextRequest) {
             console.error("[api/contact] EmailJS failed", {
                 status: res.status,
                 body: text.slice(0, 500),
+                hasPrivateKey: Boolean(emailjsCfg.privateKey),
             });
             return NextResponse.json(
                 { error: "Failed to send message" },

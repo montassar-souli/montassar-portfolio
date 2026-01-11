@@ -29,11 +29,6 @@ export const metadata: Metadata = {
     title: "Montassar Souli - Full Stack Developer",
     description: "Full stack developer specializing in Next.js, NestJS, and modern web technologies.",
     siteName: "Montassar Souli Portfolio",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Montassar Souli - Full Stack Developer",
-    description: "Full stack developer specializing in Next.js, NestJS, and modern web technologies.",
   }
 }
 
