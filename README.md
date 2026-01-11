@@ -1,50 +1,21 @@
 # Montassar Souli — Portfolio
 
-Personal portfolio built with Next.js (App Router) showcasing projects, experience, and a production-ready set of backend features: streaming AI chat, contact form email delivery, and newsletter subscriptions.
+Personal portfolio built with Next.js (App Router) showcasing projects, experience, and a small set of production-minded features (AI chat, contact form, newsletter signup).
 
 Live URL (configured in metadata): https://montassar-portfolio.vercel.app
 
 ## What’s Implemented
 
-### Pages
-
-- Home (`/`): Hero + About recap + Projects recap
-- Projects (`/projects`): Filterable project list
-- Project details (`/project/[name]`): Dynamic route with SEO metadata generation
-- About (`/about`)
-- Contact (`/contact`): Validated contact form
-- Chat (`/chat`): Streaming AI chat UI
-
-### Backend APIs (Route Handlers)
-
-All API routes run on the Node.js runtime.
-
-- `POST /api/chat`
-
-  - Streams plain text responses from OpenRouter.
-  - Abuse protection:
-    - Per-IP rate limiting (Upstash Redis sliding window)
-    - Daily token quota (Upstash Redis)
-    - User-Agent signal logging + optional allowlist
-    - Optional CORS allowlist via `ALLOWED_ORIGIN`
-  - Streaming safety:
-    - Inactivity timeout
-    - Token “reservation” + commit based on final usage (best-effort)
-
-- `POST /api/contact`
-
-  - Validates input with Zod.
-  - Sends email using EmailJS (server-side REST call) and includes metadata (IP, source URL, timestamp).
-  - Protected by rate limiting + optional origin checks.
-
-- `POST /api/newsletter`
-  - Validates email with Zod.
-  - Persists subscribers into Firestore (`newsletterSubscribers` collection).
-  - Protected by rate limiting + optional origin checks.
+- Responsive portfolio UI (home, about, projects listing, project details)
+- Project details with SEO-friendly metadata
+- Contact form with client-side validation and server-side email delivery
+- Newsletter signup persisted to a database
+- AI chat experience with streaming responses
+- Basic abuse protection patterns (rate limiting / quotas)
 
 ## Tech Stack
 
-- Next.js 15 (App Router) + React 19
+- Next.js 16 (App Router) + React 19
 - TypeScript
 - Tailwind CSS v4 + PostCSS
 - Framer Motion (UI animation)
@@ -53,18 +24,6 @@ All API routes run on the Node.js runtime.
 - Upstash Redis + `@upstash/ratelimit` (rate limiting + quotas)
 - Firebase Admin SDK (Firestore)
 - ESLint (Next.js config)
-
-## Project Structure
-
-- `src/app`: Routes, layouts, and API route handlers
-- `src/components`: UI components (navigation, footer, project detail, home sections)
-- `src/lib`: Integrations and shared logic
-  - `config.ts`: Centralized env config
-  - `limits.ts`: Upstash rate limit + daily token quota
-  - `abuse.ts`: Origin checks + IP extraction + UA signal
-  - `openrouter.ts`: OpenRouter client
-  - `firebaseAdmin.ts`: Firestore admin client
-  - `projectsData.ts`: Portfolio projects data and helpers
 
 ## Getting Started (Local)
 
